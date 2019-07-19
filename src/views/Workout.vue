@@ -172,7 +172,7 @@
       this.fetchWorkouts();
     }
     async fetchWorkouts() {
-      const response = await fetch('http://localhost:3000/api/workouts');
+      const response = await fetch('https://glide-well.b-sw.co/api/workouts');
       const data = await response.json();
       this.workouts = data.workouts as WorkoutRecord[];
     }
@@ -181,7 +181,7 @@
       if (this.selectedWorkout.id) {
         // update
         const id = this.selectedWorkout.id;
-        const response = await fetch(`http://localhost:3000/api/workouts/${id}/`, {
+        const response = await fetch(`https://glide-well.b-sw.co/api/workouts/${id}/`, {
           method: 'put', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, cors, *same-origin
           headers: {
@@ -191,7 +191,7 @@
         });
       } else {
         // create
-        const response = await fetch('http://localhost:3000/api/workouts/', {
+        const response = await fetch('https://glide-well.b-sw.co/api/workouts/', {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, cors, *same-origin
           headers: {
