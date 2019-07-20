@@ -129,6 +129,7 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
+  const API_HOST_NAME = 'http://localhost:3000';
 
   interface WorkoutRecord {
     id?: number;
@@ -173,7 +174,7 @@
       this.fetchWorkouts();
     }
     async fetchWorkouts() {
-      const response = await fetch('https://glide-well.b-sw.co/api/workouts');
+      const response = await fetch(`${API_HOST_NAME}/api/workouts`);
       const data = await response.json();
       this.workouts = data.workouts as WorkoutRecord[];
     }
@@ -182,7 +183,7 @@
       if (this.selectedWorkout.id) {
         // update
         const id = this.selectedWorkout.id;
-        const response = await fetch(`https://glide-well.b-sw.co/api/workouts/${id}/`, {
+        const response = await fetch(`${API_HOST_NAME}/api/workouts/${id}/`, {
           method: 'put', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, cors, *same-origin
           headers: {
@@ -192,7 +193,7 @@
         });
       } else {
         // create
-        const response = await fetch('https://glide-well.b-sw.co/api/workouts/', {
+        const response = await fetch(`${API_HOST_NAME}/api/workouts/`, {
           method: 'POST', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, cors, *same-origin
           headers: {
@@ -217,13 +218,14 @@
         type: 'warning'
       }).then(async () => {
         const id = workout.id;
-        const response = await fetch(`https://glide-well.b-sw.co/api/workouts/${id}/`, {
+        const response = await fetch(`${API_HOST_NAME}/api/workouts/${id}/`, {
           method: 'delete', // *GET, POST, PUT, DELETE, etc.
           mode: 'cors', // no-cors, cors, *same-origin
           headers: {
             'Content-Type': 'application/json',
           }
         });
+        this.fetchWorkouts();
       })
     }
     deleteDetail(scope: any) {
