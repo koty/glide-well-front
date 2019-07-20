@@ -129,7 +129,8 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
-  const API_HOST_NAME = 'http://localhost:3000';
+  // const API_HOST_NAME = 'http://localhost:3000';
+  const API_HOST_NAME = 'https://glide-well.b-sw.co';
 
   interface WorkoutRecord {
     id?: number;
