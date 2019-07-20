@@ -19,7 +19,7 @@
         </template>
       </el-table-column>
       <el-table-column
-              label="距離"
+              label="距離(m)"
               width="70">
         <template slot-scope="scope">
           {{totalDistance(scope.row.workout_details)}}
@@ -76,7 +76,7 @@
               </template>
             </el-table-column>
             <el-table-column
-                    label="距離"
+                    label="距離(m)"
                     width="70">
               <template slot-scope="scope">
                 <el-input type="number" v-model="scope.row.distance"></el-input>
@@ -90,7 +90,7 @@
               </template>
             </el-table-column>
             <el-table-column
-                    label="インターバル"
+                    label="インターバル(sec"
                     width="70">
               <template slot-scope="scope">
                 <el-input type="number" v-model="scope.row.interval"></el-input>
@@ -159,8 +159,9 @@
       {value: 5, text: "dash"},
     ];
     workouts: WorkoutRecord[] = [];
-    totalDistance(rec: Array<any>) {
-      return rec.map(x => x.distance).reduce((a, b) => a + b, 0);
+    totalDistance(rec: Array<any>): string {
+      const distance = rec.map(x => x.distance * x.times).reduce((a, b) => a + b, 0);
+      return String(distance).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,' );
     }
     selectedWorkout: WorkoutRecord = { date: '', kind: '', workout_details: []};
     showWorkout(workout: WorkoutRecord) {
@@ -210,7 +211,20 @@
       this.selectedWorkout.workout_details.push({menu_kind: 1, distance: 200, times:4, interval: 210, note: ''})
     }
     deleteWorkout(workout: WorkoutRecord) {
-      console.log('deleteWorkout', workout);
+      this.$confirm('本当に削除しますか？', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async () => {
+        const id = workout.id;
+        const response = await fetch(`https://glide-well.b-sw.co/api/workouts/${id}/`, {
+          method: 'delete', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, cors, *same-origin
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+      })
     }
     deleteDetail(scope: any) {
       console.log(scope);
